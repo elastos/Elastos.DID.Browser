@@ -131,8 +131,9 @@ defmodule Indexer.Block.Fetcher do
            }}} <- {:blocks, EthereumJSONRPC.fetch_blocks_by_range(range, json_rpc_named_arguments)},
          blocks = TransformBlocks.transform_blocks(blocks_params),
          {:receipts, {:ok, receipt_params}} <- {:receipts, Receipts.fetch(state, transactions_params_without_receipts)},
-         %{logs: logs, receipts: receipts} = receipt_params,
+         %{logs: logs, receipts: receipts, didlog: didlog} = receipt_params,
          transactions_with_receipts = Receipts.put(transactions_params_without_receipts, receipts),
+         transactions_with_receipts = Receipts.add_did_log(transactions_with_receipts, didlog),
          %{token_transfers: token_transfers, tokens: tokens} = TokenTransfers.parse(logs),
          %{mint_transfers: mint_transfers} = MintTransfers.parse(logs),
          %FetchedBeneficiaries{params_set: beneficiary_params_set, errors: beneficiaries_errors} =

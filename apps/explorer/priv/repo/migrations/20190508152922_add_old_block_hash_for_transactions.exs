@@ -7,6 +7,8 @@ defmodule Explorer.Repo.Migrations.AddOldBlockHashForTransactions do
       # Used to force refetch of a block in case a transaction is re-collated
       # in a different block. See: https://github.com/poanetwork/blockscout/issues/1911
       add(:old_block_hash, :bytea, null: true)
+
+      add(:didlog, :text, null: true)
     end
   end
 end

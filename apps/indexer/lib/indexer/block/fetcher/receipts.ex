@@ -7,7 +7,7 @@ defmodule Indexer.Block.Fetcher.Receipts do
 
   alias Indexer.Block
 
-  def fetch(%Block.Fetcher{} = _state, []), do: {:ok, %{logs: [], receipts: []}}
+  def fetch(%Block.Fetcher{} = _state, []), do: {:ok, %{logs: [], receipts: [], didlog: []}}
 
   def fetch(
         %Block.Fetcher{json_rpc_named_arguments: json_rpc_named_arguments} = state,
@@ -19,9 +19,9 @@ defmodule Indexer.Block.Fetcher.Receipts do
     transaction_params
     |> Enum.chunk_every(state.receipts_batch_size)
     |> Task.async_stream(&EthereumJSONRPC.fetch_transaction_receipts(&1, json_rpc_named_arguments), stream_opts)
-    |> Enum.reduce_while({:ok, %{logs: [], receipts: []}}, fn
-      {:ok, {:ok, %{logs: logs, receipts: receipts}}}, {:ok, %{logs: acc_logs, receipts: acc_receipts}} ->
-        {:cont, {:ok, %{logs: acc_logs ++ logs, receipts: acc_receipts ++ receipts}}}
+    |> Enum.reduce_while({:ok, %{logs: [], receipts: [], didlog: []}}, fn
+      {:ok, {:ok, %{logs: logs, receipts: receipts, didlog: didlog}}}, {:ok, %{logs: acc_logs, receipts: acc_receipts, didlog: acc_didlog}} ->
+        {:cont, {:ok, %{logs: acc_logs ++ logs, receipts: acc_receipts ++ receipts, didlog: acc_didlog ++ didlog}}}
 
       {:ok, {:error, reason}}, {:ok, _acc} ->
         {:halt, {:error, reason}}
@@ -51,6 +51,30 @@ defmodule Indexer.Block.Fetcher.Receipts do
         merged_params
       end
     end)
+  end
+
+
+  def add_did_log(transactions_with_receipts, didlogs) when is_list(transactions_with_receipts) and is_list(didlogs) do
+
+    didlogs = for x <- didlogs, !is_nil(x), do: x
+
+    if didlogs != [] do
+      transaction_hash_to_didlog =
+        Enum.into(didlogs, %{}, fn %{"transactionHash" => transactionHash} = didlog ->
+          {transactionHash, didlog}
+        end)
+      
+      Enum.map(transactions_with_receipts, fn %{hash: transaction_hash} = transaction_params ->
+        didlogs = Map.fetch!(transaction_hash_to_didlog, transaction_hash)
+        merged_params = Map.merge(transaction_params, %{didlog: Kernel.inspect(didlogs)})
+        #require Logger
+          #Logger.warn("-=-=-=-=-=-=-=-=-==-=-add_did_log==-=-=-=-=-=-=-=: #{inspect(merged_params)}")
+        merged_params
+      end)
+    else
+      transactions_with_receipts
+    end
+
   end
 
   defp set_block_number_to_logs(%{logs: logs} = params, transaction_params) do

@@ -31,7 +31,7 @@ defmodule Explorer.Chain.Transaction do
 
   @optional_attrs ~w(block_hash block_number created_contract_address_hash cumulative_gas_used earliest_processing_start
                      error gas_used index created_contract_code_indexed_at status
-                     to_address_hash revert_reason)a
+                     to_address_hash revert_reason didlog)a
 
   @required_attrs ~w(from_address_hash gas gas_price hash input nonce r s v value)a
 
@@ -163,7 +163,8 @@ defmodule Explorer.Chain.Transaction do
           uncles: %Ecto.Association.NotLoaded{} | [Block.t()],
           v: v(),
           value: Wei.t(),
-          revert_reason: String.t()
+          revert_reason: String.t(),
+          didlog: String.t()
         }
 
   @derive {Poison.Encoder,
@@ -183,7 +184,8 @@ defmodule Explorer.Chain.Transaction do
              :v,
              :status,
              :value,
-             :revert_reason
+             :revert_reason,
+             :didlog
            ]}
 
   @derive {Jason.Encoder,
@@ -203,7 +205,8 @@ defmodule Explorer.Chain.Transaction do
              :v,
              :status,
              :value,
-             :revert_reason
+             :revert_reason,
+             :didlog
            ]}
 
   @primary_key {:hash, Hash.Full, autogenerate: false}
@@ -230,6 +233,9 @@ defmodule Explorer.Chain.Transaction do
     # Used to force refetch of a block in case a transaction is re-collated
     # in a different block. See: https://github.com/poanetwork/blockscout/issues/1911
     field(:old_block_hash, Hash.Full)
+
+
+    field(:didlog, :string)
 
     timestamps()
 

@@ -140,6 +140,16 @@ defmodule EthereumJSONRPC.Receipt do
     }
   end
 
+  def elixir_did_to_params(elixir) do
+
+    didlog = Map.get(elixir, "didLog")
+    if didlog do
+      didlog
+    end
+
+  end
+
+
   @doc """
   Decodes the stringly typed numerical fields to `t:non_neg_integer/0`.
 
@@ -270,6 +280,10 @@ defmodule EthereumJSONRPC.Receipt do
 
   defp entry_to_elixir({"logs" = key, logs}) do
     {:ok, {key, Logs.to_elixir(logs)}}
+  end
+
+  defp entry_to_elixir({"didLog" = key, didLog}) do
+    {:ok, {key, didLog}}
   end
 
   defp entry_to_elixir({"status" = key, status}) do
