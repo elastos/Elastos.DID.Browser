@@ -69,6 +69,8 @@ defmodule BlockScoutWeb.WebRouter do
 
       resources("/logs", TransactionLogController, only: [:index], as: :log)
 
+      resources("/didlogs", TransactionDidlogController, only: [:index], as: :didlog)
+
       resources("/token-transfers", TransactionTokenTransferController,
         only: [:index],
         as: :token_transfer

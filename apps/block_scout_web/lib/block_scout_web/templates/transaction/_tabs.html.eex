@@ -25,4 +25,13 @@
       class: "card-tab #{tab_status("raw-trace", @conn.request_path)}",
       to: AccessHelpers.get_path(@conn, :transaction_raw_trace_path, :index, @transaction)
       ) %>
+
+  <%= if @didlog do %>
+    <%= link(
+          gettext("DID Logs"),
+          class: "card-tab #{tab_status("didlogs", @conn.request_path)}",
+          to: AccessHelpers.get_path(@conn, :transaction_didlog_path, :index, @transaction)
+        )
+      %>
+  <% end %>
 </div>

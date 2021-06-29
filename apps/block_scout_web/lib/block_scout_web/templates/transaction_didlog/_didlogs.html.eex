@@ -1,0 +1,51 @@
+<div data-test="transaction_log" class="tile tile-muted">
+
+  <dl class="row">
+    
+    <dt class="col-md-2">
+      <%= gettext "DID" %>
+    </dt>
+    <dd class="col-md-10">
+      <div class="text-dark raw-transaction-log-index">
+        <%= @didlog["did"] %>
+      </div>
+    </dd>
+
+    <dt class="col-md-2">
+      <%= gettext "operation" %>
+    </dt>
+    <dd class="col-md-10">
+      <div class="text-dark raw-transaction-log-index">
+        <%= @didlog["operation"] %>
+      </div>
+    </dd>
+
+    <dt class="col-md-2">
+      <%= gettext "transactionHash" %>
+    </dt>
+    <dd class="col-md-10">
+      <div class="text-dark raw-transaction-log-index">
+        <%= @didlog["transactionHash"] %>
+      </div>
+    </dd>
+
+    <dt class="col-md-2">
+      <%= gettext "removed" %>
+    </dt>
+    <dd class="col-md-10">
+      <div class="text-dark raw-transaction-log-index">
+        <%= @didlog["removed"] %>
+      </div>
+    </dd>
+
+    <dt class="col-md-2">
+      <%= gettext "data" %>
+    </dt>
+    <dd class="col-md-10">
+      <div class="text-dark raw-transaction-log-index">
+        <%= @didlog["data"] %>
+      </div>
+    </dd>
+
+  </dl>
+</div>

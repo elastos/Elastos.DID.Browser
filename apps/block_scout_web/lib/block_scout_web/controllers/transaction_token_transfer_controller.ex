@@ -106,6 +106,7 @@ defmodule BlockScoutWeb.TransactionTokenTransferController do
                :token_transfers => :optional
              }
            ),
+         {:ok, didlog} <- Chain.didlog_to_transaction(transaction_hash),
          {:ok, false} <- AccessHelpers.restricted_access?(to_string(transaction.from_address_hash), params),
          {:ok, false} <- AccessHelpers.restricted_access?(to_string(transaction.to_address_hash), params) do
       render(
@@ -115,6 +116,7 @@ defmodule BlockScoutWeb.TransactionTokenTransferController do
         block_height: Chain.block_height(),
         current_path: current_path(conn),
         show_token_transfers: true,
+        didlog: didlog,
         transaction: transaction
       )
     else

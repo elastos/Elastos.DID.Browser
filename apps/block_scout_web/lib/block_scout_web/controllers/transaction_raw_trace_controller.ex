@@ -75,6 +75,7 @@ defmodule BlockScoutWeb.TransactionRawTraceController do
         internal_transactions: internal_transactions,
         block_height: Chain.block_height(),
         show_token_transfers: Chain.transaction_has_token_transfers?(hash),
+        didlog: false,
         transaction: transaction
       )
     else

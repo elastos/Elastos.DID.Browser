@@ -93,6 +93,7 @@ defmodule BlockScoutWeb.TransactionLogController do
                :token_transfers => :optional
              }
            ),
+          {:ok, didlog} <- Chain.didlog_to_transaction(transaction_hash),
          {:ok, false} <- AccessHelpers.restricted_access?(to_string(transaction.from_address_hash), params),
          {:ok, false} <- AccessHelpers.restricted_access?(to_string(transaction.to_address_hash), params) do
       render(
@@ -102,6 +103,7 @@ defmodule BlockScoutWeb.TransactionLogController do
         show_token_transfers: Chain.transaction_has_token_transfers?(transaction_hash),
         current_path: current_path(conn),
         transaction: transaction,
+        didlog: didlog,
         exchange_rate: Market.get_exchange_rate(Explorer.coin()) || Token.null()
       )
     else

@@ -66,7 +66,7 @@ defmodule Indexer.Block.Fetcher.Receipts do
       
       Enum.map(transactions_with_receipts, fn %{hash: transaction_hash} = transaction_params ->
         didlogs = Map.fetch!(transaction_hash_to_didlog, transaction_hash)
-        merged_params = Map.merge(transaction_params, %{didlog: Kernel.inspect(didlogs)})
+        merged_params = Map.merge(transaction_params, %{didlog: Poison.encode!(didlogs)})
         #require Logger
           #Logger.warn("-=-=-=-=-=-=-=-=-==-=-add_did_log==-=-=-=-=-=-=-=: #{inspect(merged_params)}")
         merged_params

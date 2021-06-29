@@ -1499,6 +1499,22 @@ defmodule Explorer.Chain do
     end
   end
 
+  def didlog_to_transaction(
+        %Hash{byte_count: unquote(Hash.Full.byte_count())} = hash
+      ) do
+
+    Transaction
+    |> where(hash: ^hash)
+    |> Repo.one()
+    |> case do
+      nil ->
+        {:error, :not_found}
+
+      transaction ->
+        {:ok, transaction.didlog}
+    end
+  end
+
   @doc """
   Converts list of `t:Explorer.Chain.Transaction.t/0` `hashes` to the list of `t:Explorer.Chain.Transaction.t/0`s for
   those `hashes`.
