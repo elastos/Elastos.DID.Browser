@@ -146,6 +146,7 @@ defmodule BlockScoutWeb.Schema.Types do
     field(:to_address_hash, :address_hash)
     field(:created_contract_address_hash, :address_hash)
     field(:didlog, :string)
+    field(:did, :string)
 
     connection field(:internal_transactions, node_type: :internal_transaction) do
       arg(:count, :integer)
