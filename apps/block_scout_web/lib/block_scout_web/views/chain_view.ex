@@ -60,4 +60,8 @@ defmodule BlockScoutWeb.ChainView do
   defp format_currency_value(value, _symbol) do
     "#{number_to_currency(value, precision: 0)}"
   end
+
+  def formatted_gas(gas, format \\ []) do
+    BlockScoutWeb.Cldr.Number.to_string!(gas, format)
+  end
 end

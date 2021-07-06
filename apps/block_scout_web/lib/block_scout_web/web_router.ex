@@ -256,6 +256,8 @@ defmodule BlockScoutWeb.WebRouter do
 
     get("/search", ChainController, :search)
 
+    get("/did", ChainController, :did)
+
     get("/search-logs", AddressLogsController, :search_logs)
 
     get("/transactions_csv", AddressTransactionController, :transactions_csv)

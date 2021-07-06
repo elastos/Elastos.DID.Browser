@@ -145,6 +145,25 @@ defmodule BlockScoutWeb.ChainController do
     redirect(conn, to: address_path(conn, :show, item))
   end
 
+  defp redirect_search_results(conn, %{"did" => did} = item) do
+    redirect(conn, to: chain_path(conn, :did, item))
+  end
+
+  def did(conn, did) do
+    did_name = did["did"]
+    transactions = BlockScoutWeb.Chain.find_did_to_transactions(did_name)
+    #require Logger
+      #Logger.warn("-=-=-=-=-=-=-=-=-==-=-did_controller==-=-=-=-=-=-=-=: #{inspect(transactions)}")
+
+    render(
+      conn,
+      "_did.html",
+      current_path: current_path(conn),
+      did_name: did_name,
+      transactions: transactions
+    )
+  end
+
   defp redirect_search_results(conn, %Block{} = item) do
     redirect(conn, to: block_path(conn, :show, item))
   end

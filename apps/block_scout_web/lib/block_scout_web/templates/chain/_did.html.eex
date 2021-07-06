@@ -1,0 +1,106 @@
+<section class="container" style="max-width: 1140px !important;">
+
+  <section class="address-overview" data-page="address-details">
+    <div class="row">
+      <!-- Address details -->
+      <div class="card-section col-md-12 col-lg-7 pr-0-md">
+        <div class="card">
+          <div class="card-body">
+            <h1 class="card-title lg-card-title">
+              <%= gettext "DID Details" %>
+            </h1>
+
+            <h3 class="address-detail-hash-title data-test="address_detail_hash">
+              <%= @did_name %>
+            </h3>
+
+            <!-- <div class="d-flex flex-column flex-lg-row justify-content-start text-muted">
+              <span class="address-detail-item">
+                <%= gettext("Last Balance Update: Block #") %><span data-selector="fetched-coin-balance-block-number">
+                <%= "ss" %></span>
+              </span>
+            </div> -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section data-page="address-transactions">
+    <div class="card">
+
+      <div class="card-body" >
+        <div class="clearfix">
+          <h2 class="card-title float-left"><%= gettext "DID Transactions" %></h2>          
+        </div>
+
+        <div data-empty-response-message style="display: none;">
+          <div class="tile tile-muted text-center" data-selector="empty-transactions-list">
+            <%= gettext "There are no transactions for this address." %>
+          </div>
+        </div>
+
+        <%= Enum.map(@transactions, fn transaction -> %>
+          <div style="padding-bottom: 1rem;">
+            <div class="tile tile-type-transaction fade-in tile-status--success" data-test="transaction">
+              <div class="row tile-body" data-selector="token-transfers-toggle" data-test="chain_transaction">
+                <!-- Color Block -->
+                <div class="tile-transaction-type-block col-md-2 d-flex flex-row flex-md-column">
+                  <span class="tile-label" data-test="transaction_type">
+                    Operation
+                  </span>
+                  <span class="tile-status-label ml-2 ml-md-0" data-test="transaction_status">
+                    <%= Poison.decode!(transaction.didlog)["operation"] %>  
+                  </span>
+                </div>
+                <!-- Content -->
+                <div class="col-md-7 col-lg-8 d-flex flex-column pr-2 pr-sm-2 pr-md-0">
+                  <a class="text-truncate" data-test="transaction_hash_link" href="/tx/<%= transaction.hash %>">
+                    <%= transaction.hash %>
+                  </a>
+                  <span>
+                    <span class="" data-address-hash="<%= transaction.from_address_hash %>">
+                    <span class="d-none d-md-none d-xl-inline"><%= transaction.from_address_hash %></span>
+                    <!-- <span class="d-md-inline-block d-xl-none">0x8207–2c97d1</span> -->
+                  </span>
+                    →
+                  <a data-test="address_hash_link" href="/address/<%= transaction.to_address_hash %>">
+                    <span class="" data-address-hash="<%= transaction.to_address_hash %>">
+                      <span class="d-none d-md-none d-xl-inline"><%= transaction.to_address_hash %></span>
+                      <!-- <span class="d-md-inline-block d-xl-none">0x0000–000000</span> -->
+                    </span>
+                  </a>
+                  </span>
+                    <span class="d-flex flex-md-row flex-column mt-3 mt-md-0">
+                    <span class="tile-title">
+                      0 ELA
+                    </span>
+                    <span class="ml-0 ml-md-1 text-nowrap">
+                      <%= BlockScoutWeb.TransactionView.formatted_fee(transaction, denomination: :ether, include_label: false) %> <%= gettext "TX Fee" %>
+                    </span>
+                  </span>
+                </div>
+                <!-- Transfer -->
+                
+                <!-- Block info -->
+                <div class="col-md-3 col-lg-2 d-flex flex-row flex-md-column flex-nowrap justify-content-center text-md-right mt-3 mt-md-0 tile-bottom">
+                  <span class="mr-2 mr-md-0 order-1">
+                    <a href="/blocks/7133717">Block #<%= transaction.block_number %></a>      
+                  </span>                  
+                  <span class="mr-2 mr-md-0 order-2" in-tile="" data-from-now="<%= transaction.inserted_at %>"></span>
+                  <span class="mr-2 mr-md-0 order-0 order-md-3">
+                      <span data-test="transaction_type" class="badge badge-danger tile-badge">
+                        OUT            
+                      </span>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        <% end) %>
+      </div>
+    </div>
+  </section>
+
+  <script defer data-cfasync="false" src="<%= static_path(@conn, "/js/transaction.js") %>"></script>
+</section>

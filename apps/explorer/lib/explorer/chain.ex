@@ -1046,6 +1046,20 @@ defmodule Explorer.Chain do
     end
   end
 
+  def find_did_from_hash(did) do
+    Transaction
+    |> where(did: ^did)
+    |> order_by(desc: :block_number)
+    |> Repo.all()
+    |> case do
+      nil ->
+        {:error, :not_found}
+
+      transactions ->
+        {:ok, transactions}
+    end
+  end
+
   def decompiled_code(address_hash, version) do
     query =
       from(contract in DecompiledSmartContract,

@@ -12,7 +12,8 @@ defmodule BlockScoutWeb.Chain do
       string_to_address_hash: 1,
       string_to_block_hash: 1,
       string_to_transaction_hash: 1,
-      token_contract_address_from_token_name: 1
+      token_contract_address_from_token_name: 1,
+      find_did_from_hash: 1
     ]
 
   alias Explorer.Chain.Block.Reward
@@ -76,6 +77,9 @@ defmodule BlockScoutWeb.Chain do
 
   def from_param("0x" <> number_string = param) when byte_size(number_string) == @address_hash_len,
     do: address_from_param(param)
+
+  def from_param("did" <> number_string = param),
+    do: did_from_param(param)
 
   def from_param("0x" <> number_string = param) when byte_size(number_string) == @tx_block_hash_len,
     do: block_or_transaction_from_param(param)
@@ -215,6 +219,17 @@ defmodule BlockScoutWeb.Chain do
       :error ->
         {:error, :not_found}
     end
+  end
+
+  defp did_from_param(did) do
+    {:ok, %{"did" => did}}
+  end
+
+  def find_did_to_transactions(did) do
+    {:ok, transactions} = find_did_from_hash(did)
+    transactions
+    #require Logger
+      #Logger.warn("-=-=-=-=-=-=-=-=-==-=-find_did_to_transactions==-=-=-=-=-=-=-=: #{inspect(transactions)}")
   end
 
   defp token_address_from_name(name) do
