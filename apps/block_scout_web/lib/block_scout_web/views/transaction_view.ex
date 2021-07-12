@@ -296,6 +296,14 @@ defmodule BlockScoutWeb.TransactionView do
     AddressView.contract?(from_address) || AddressView.contract?(to_address)
   end
 
+  def is_did_transaction?(%Transaction{did: did}) do
+    if did do
+      true
+    else
+      false
+    end
+  end
+
   def involves_token_transfers?(%Transaction{token_transfers: []}), do: false
   def involves_token_transfers?(%Transaction{token_transfers: transfers}) when is_list(transfers), do: true
   def involves_token_transfers?(_), do: false
@@ -339,6 +347,9 @@ defmodule BlockScoutWeb.TransactionView do
 
       involves_contract?(transaction) ->
         gettext("Contract Call")
+
+      is_did_transaction?(transaction) ->
+        gettext("DID Transaction")
 
       true ->
         gettext("Transaction")
