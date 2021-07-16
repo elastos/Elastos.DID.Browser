@@ -7,4 +7,10 @@ defmodule BlockScoutWeb.TransactionDidlogView do
   def decode(log, transaction) do
     Log.decode(log, transaction)
   end
+
+  def decode_payload(payload) do
+    payload = Enum.at(payload, 0)
+    {:ok, payload_result} = Base.decode64(payload, padding: false)
+    payload_result
+  end
 end

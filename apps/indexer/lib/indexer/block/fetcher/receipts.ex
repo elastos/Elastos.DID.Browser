@@ -66,6 +66,8 @@ defmodule Indexer.Block.Fetcher.Receipts do
       
       Enum.map(transactions_with_receipts, fn %{hash: transaction_hash} = transaction_params ->
         didlogs = Map.fetch!(transaction_hash_to_didlog, transaction_hash)
+        payload = EthereumJSONRPC.fetch_did_info(didlogs["did"], transaction_hash)
+        didlogs = Map.merge(didlogs, %{payload: payload})
         merged_params = Map.merge(transaction_params, %{didlog: Poison.encode!(didlogs)})
         merged_params = Map.merge(merged_params, %{did: didlogs["did"]})
         #require Logger

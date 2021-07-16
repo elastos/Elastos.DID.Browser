@@ -472,6 +472,49 @@ defmodule EthereumJSONRPC do
     end
   end
 
+  def fetch_did_info(did, transaction_hash) do
+
+    request = %{
+      id: 1,
+      method: "did_resolveDID",
+      params: [
+        %{
+          did: did,
+          all: false
+        }
+      ]
+    }
+
+    json_rpc_named_arguments = Application.get_env(:explorer, :json_rpc_named_arguments)
+
+    result =
+      request
+      |> EthereumJSONRPC.request()
+      |> EthereumJSONRPC.json_rpc(json_rpc_named_arguments)
+
+    case result do
+      {:ok, response} ->
+
+        if response["transaction"] != [] do
+          transactions = response["transaction"]
+          Enum.map(transactions, fn transaction ->
+            txid = "0x" <> transaction["txid"]
+            #require Logger
+              #Logger.warn("-=-=-=-=-=-=-=-=-==-=-fetch_did_info==-=-=-=-=-=-=-=: #{inspect(txid)}, #{inspect(transaction_hash)}")
+            if txid == transaction_hash do
+              transaction["operation"]["payload"]
+            else
+              ""
+            end
+          end)
+        end
+
+      {:error, reason} ->
+        ""
+    end
+
+  end
+
   defp fetch_blocks_by_params(params, request, json_rpc_named_arguments)
        when is_list(params) and is_function(request, 1) do
     id_to_params = id_to_params(params)
