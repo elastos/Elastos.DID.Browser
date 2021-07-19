@@ -1457,7 +1457,7 @@ msgstr ""
 #, elixir-format
 #: lib/block_scout_web/templates/layout/_topnav.html.eex:121
 #: lib/block_scout_web/templates/layout/_topnav.html.eex:125
-msgid "Search by address, token symbol name, transaction hash, or block number"
+msgid "Search by address, token symbol name, transaction hash, block number or DID"
 msgstr ""
 
 #, elixir-format
