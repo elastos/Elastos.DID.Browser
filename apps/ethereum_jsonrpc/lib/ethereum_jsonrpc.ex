@@ -480,7 +480,7 @@ defmodule EthereumJSONRPC do
       params: [
         %{
           did: did,
-          all: false
+          all: true
         }
       ]
     }
