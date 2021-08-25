@@ -107,7 +107,7 @@ defmodule BlockScoutWeb.LayoutView do
           nil
 
         release_link_env_var == "" || release_link_env_var == nil ->
-          "https://github.com/elastos/Elastos.ELA.SideChain.ETH.Blockscout/tree/" <> version
+          "https://github.com/elastos/Elastos.ELA.SideChain.EID.Blockscout/tree/" <> version
 
         true ->
           release_link_env_var
