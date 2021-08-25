@@ -5,15 +5,15 @@ defmodule BlockScoutWeb.LayoutView do
   alias Plug.Conn
   alias Poison.Parser
 
-  @issue_url "https://github.com/elastos/Elastos.ELA.SideChain.ETH.Blockscout/issues/new/choose"
+  @issue_url "https://github.com/elastos/Elastos.ELA.SideChain.EID.Blockscout/issues/new/choose"
   @default_other_networks [
     %{
       title: "Mainnet",
-      url: "https://eth.elastos.io",
+      url: "https://eid.elastos.io",
     },
     %{
       title: "Testnet",
-      url: "https://eth-testnet.elastos.io",
+      url: "https://eid-testnet.elastos.io",
       test_net?: true
     }
   ]
