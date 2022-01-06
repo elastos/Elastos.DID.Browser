@@ -509,7 +509,7 @@ defmodule EthereumJSONRPC do
           end)
         end
 
-      {:error, reason} ->
+      {:error} ->
         ""
     end
 

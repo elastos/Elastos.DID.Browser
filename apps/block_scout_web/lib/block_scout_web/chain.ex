@@ -222,7 +222,7 @@ defmodule BlockScoutWeb.Chain do
   end
 
   defp did_from_param(did) do
-    {:ok, %{"did" => did}}
+    {:ok, %{"did" => did, "is_did" => true}}
   end
 
   def find_did_to_transactions(did) do

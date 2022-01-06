@@ -145,7 +145,7 @@ defmodule BlockScoutWeb.ChainController do
     redirect(conn, to: address_path(conn, :show, item))
   end
 
-  defp redirect_search_results(conn, %{"did" => did} = item) do
+  defp redirect_search_results(conn, %{"did" => did, "is_did" => true} = item) do
     redirect(conn, to: chain_path(conn, :did, item))
   end
 
