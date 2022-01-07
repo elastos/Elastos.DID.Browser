@@ -69,6 +69,7 @@ defmodule Indexer.Block.Fetcher.Receipts do
         payload = EthereumJSONRPC.fetch_did_info(didlogs["did"], transaction_hash)
         if payload != "" do
           payload = Enum.reject(payload, & &1 == "")
+          _ = var!(payload)
         end
         didlogs = Map.merge(didlogs, %{payload: payload})
         merged_params = Map.merge(transaction_params, %{didlog: Poison.encode!(didlogs)})
