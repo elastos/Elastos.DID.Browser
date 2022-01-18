@@ -14,12 +14,16 @@
               <%= @did_name %>
             </h3>
 
-            <!-- <div class="d-flex flex-column flex-lg-row justify-content-start text-muted">
+            <div class="d-flex flex-column flex-lg-row justify-content-start text-muted">
               <span class="address-detail-item">
-                <%= gettext("Last Balance Update: Block #") %><span data-selector="fetched-coin-balance-block-number">
-                <%= "ss" %></span>
+                <%= gettext("Status: ") %>
+                <%= if @did_status == 2 do %>
+                  <%= gettext("deactivated") %>
+                <% else %>
+                  <%= gettext("effective") %>
+                <% end %>
               </span>
-            </div> -->
+            </div> 
           </div>
         </div>
       </div>

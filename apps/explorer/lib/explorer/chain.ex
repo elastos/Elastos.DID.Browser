@@ -1060,6 +1060,21 @@ defmodule Explorer.Chain do
     end
   end
 
+  def find_did_status_from_did(did) do
+    Transaction
+    |> where(did: ^did)
+    |> order_by(desc: :block_number)
+    |> limit(1)
+    |> Repo.one()
+    |> case do
+      nil ->
+        {:error, :not_found}
+
+      transaction ->
+        {:ok, transaction.did_status}
+    end
+  end
+
   def decompiled_code(address_hash, version) do
     query =
       from(contract in DecompiledSmartContract,

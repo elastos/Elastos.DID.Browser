@@ -70,14 +70,26 @@ defmodule Indexer.Block.Fetcher.Receipts do
 
         case result do
           {:ok, didlogs} ->
-            payload = EthereumJSONRPC.fetch_did_info(didlogs["did"], transaction_hash)
-            if payload != "" do
-              payload = Enum.reject(payload, & &1 == "")
-              _ = var!(payload)
-            end
+            did_info_result = EthereumJSONRPC.fetch_did_info(didlogs["did"], transaction_hash)
+
+
+            require Logger
+            Logger.warn("-=-=-=-=-=-=-=-=-==-=-add_did_logfree==-=-=-=-=-=-=-=: #{inspect(did_info_result)}")
+
+
+            #if did_info_result != nil do
+              did_info_result = Enum.reject(did_info_result, & &1 == nil)
+              did_info_result = Enum.at(did_info_result, 0)
+              payload = did_info_result[:payload]
+              did_status = did_info_result[:did_status]
+             #_ = var!(payload)
+             #_ = var!(did_status)
+            #end
+
             didlogs = Map.merge(didlogs, %{payload: payload})
             merged_params = Map.merge(transaction_params, %{didlog: Poison.encode!(didlogs)})
             merged_params = Map.merge(merged_params, %{did: didlogs["did"]})
+            merged_params = Map.merge(merged_params, %{did_status: did_status})
             #require Logger
               #Logger.warn("-=-=-=-=-=-=-=-=-==-=-add_did_log==-=-=-=-=-=-=-=: #{inspect(merged_params)}")
             merged_params

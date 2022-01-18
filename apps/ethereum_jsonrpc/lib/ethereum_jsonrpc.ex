@@ -497,20 +497,19 @@ defmodule EthereumJSONRPC do
 
         if response["transaction"] != [] do
           transactions = response["transaction"]
+          did_status = response["status"]
           Enum.map(transactions, fn transaction ->
             txid = "0x" <> transaction["txid"]
             #require Logger
               #Logger.warn("-=-=-=-=-=-=-=-=-==-=-fetch_did_info==-=-=-=-=-=-=-=: #{inspect(txid)}, #{inspect(transaction_hash)}")
             if txid == transaction_hash do
-              transaction["operation"]["payload"]
-            else
-              ""
+              %{payload: transaction["operation"]["payload"], did_status: did_status}
             end
           end)
         end
 
       {:error} ->
-        ""
+        [nil]
     end
 
   end

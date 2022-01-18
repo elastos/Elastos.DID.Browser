@@ -10,6 +10,7 @@ defmodule Explorer.Repo.Migrations.AddOldBlockHashForTransactions do
 
       add(:didlog, :text, null: true)
       add(:did, :string, null: true)
+      add(:did_status, :integer, null: true)
     end
   end
 end
