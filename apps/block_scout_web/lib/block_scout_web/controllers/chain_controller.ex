@@ -153,6 +153,7 @@ defmodule BlockScoutWeb.ChainController do
     did_name = did["did"]
     transactions = BlockScoutWeb.Chain.find_did_to_transactions(did_name)
     did_status = BlockScoutWeb.Chain.find_did_status_to_transactions(did_name)
+    did_credentials_list_count = BlockScoutWeb.Chain.find_did_credentials_to_transactions(did_name)
     #require Logger
       #Logger.warn("-=-=-=-=-=-=-=-=-==-=-did_controller==-=-=-=-=-=-=-=: #{inspect(transactions)}")
 
@@ -162,6 +163,7 @@ defmodule BlockScoutWeb.ChainController do
       current_path: current_path(conn),
       did_name: did_name,
       did_status: did_status,
+      did_credentials_list_count: did_credentials_list_count,
       transactions: transactions
     )
   end

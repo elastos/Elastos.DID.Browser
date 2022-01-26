@@ -14,7 +14,9 @@
               <%= @did_name %>
             </h3>
 
-            <div class="d-flex flex-column flex-lg-row justify-content-start text-muted">
+            <hr>
+
+            <!-- <div class="d-flex flex-column flex-lg-row justify-content-start text-muted">
               <span class="address-detail-item">
                 <%= gettext("Status: ") %>
                 <%= if @did_status == 2 do %>
@@ -23,7 +25,28 @@
                   <%= gettext("effective") %>
                 <% end %>
               </span>
-            </div> 
+            </div>  -->
+
+            <dl class="row">
+              <dt class="col-sm-3 text-muted"><%= gettext("Status") %></dt>
+              <dd class="col-sm-9">
+                <span data-selector="block-confirmations">
+                  <%= if @did_status == 2 do %>
+                    <%= gettext("deactivated") %>
+                  <% else %>
+                    <%= gettext("effective") %>
+                  <% end %>
+                </span>
+              </dd>
+            </dl>
+
+            <dl class="row">
+              <dt class="col-sm-3 text-muted"><%= gettext("Credentials Count") %></dt>
+              <dd class="col-sm-9">
+              <span data-selector="block-confirmations"><%= @did_credentials_list_count %></span>
+              </dd>
+            </dl>
+
           </div>
         </div>
       </div>
@@ -35,7 +58,7 @@
 
       <div class="card-body" >
         <div class="clearfix">
-          <h2 class="card-title float-left"><%= gettext "DID Transactions" %></h2>          
+          <h2 class="card-title float-left"><%= gettext "Transactions" %></h2>          
         </div>
 
         <div data-empty-response-message style="display: none;">
@@ -49,14 +72,25 @@
             <div class="tile tile-type-transaction fade-in tile-status--success" data-test="transaction">
               <div class="row tile-body" data-selector="token-transfers-toggle" data-test="chain_transaction">
                 <!-- Color Block -->
-                <div class="tile-transaction-type-block col-md-2 d-flex flex-row flex-md-column">
-                  <span class="tile-label" data-test="transaction_type">
-                    Operation
-                  </span>
-                  <span class="tile-status-label ml-2 ml-md-0" data-test="transaction_status">
-                    <%= Poison.decode!(transaction.didlog)["operation"] %>  
-                  </span>
-                </div>
+                <%= if Poison.decode!(transaction.didlog)["operation"] == "declare" || Poison.decode!(transaction.didlog)["operation"] == "revoke" do %>
+                  <div class="tile-transaction-type-block col-md-2 d-flex flex-row flex-md-column">
+                    <span class="tile-label" data-test="transaction_type">
+                      Credential Operation
+                    </span>
+                    <span class="tile-status-label ml-2 ml-md-0" data-test="transaction_status">
+                      <%= Poison.decode!(transaction.didlog)["operation"] %>  
+                    </span>
+                  </div>
+                <% else %>
+                  <div class="tile-transaction-type-block col-md-2 d-flex flex-row flex-md-column">
+                    <span class="tile-label" data-test="transaction_type">
+                      DID Operation
+                    </span>
+                    <span class="tile-status-label ml-2 ml-md-0" data-test="transaction_status">
+                      <%= Poison.decode!(transaction.didlog)["operation"] %>  
+                    </span>
+                  </div>
+                <% end %>
                 <!-- Content -->
                 <div class="col-md-7 col-lg-8 d-flex flex-column pr-2 pr-sm-2 pr-md-0">
                   <a class="text-truncate" data-test="transaction_hash_link" href="/tx/<%= transaction.hash %>">

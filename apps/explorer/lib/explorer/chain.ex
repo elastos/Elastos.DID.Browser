@@ -1075,6 +1075,10 @@ defmodule Explorer.Chain do
     end
   end
 
+  def find_did_credentials_list_count(did) do
+    did_credentials_list_count = EthereumJSONRPC.fetch_did_credentials_list_count(did)
+  end
+
   def decompiled_code(address_hash, version) do
     query =
       from(contract in DecompiledSmartContract,

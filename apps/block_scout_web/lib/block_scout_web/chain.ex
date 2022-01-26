@@ -14,7 +14,8 @@ defmodule BlockScoutWeb.Chain do
       string_to_transaction_hash: 1,
       token_contract_address_from_token_name: 1,
       find_did_from_hash: 1,
-      find_did_status_from_did: 1
+      find_did_status_from_did: 1,
+      find_did_credentials_list_count: 1
     ]
 
   alias Explorer.Chain.Block.Reward
@@ -236,6 +237,10 @@ defmodule BlockScoutWeb.Chain do
   def find_did_status_to_transactions(did) do
     {:ok, did_status} = find_did_status_from_did(did)
     did_status
+  end
+
+  def find_did_credentials_to_transactions(did) do
+    did_credentials_list_count = find_did_credentials_list_count(did)
   end
 
   defp token_address_from_name(name) do
