@@ -1047,13 +1047,19 @@ defmodule Explorer.Chain do
   end
 
   def find_did_from_hash(did) do
-    Transaction
-    |> where(did: ^did)
+    did_str = "%#{did}%"
+    query =
+      from(
+        transaction in Transaction,
+        where: ilike(transaction.did, ^did_str)
+      )
+
+    query
     |> order_by(desc: :block_number)
     |> Repo.all()
     |> case do
       nil ->
-        {:error, :not_found}
+        {:ok, []}
 
       transactions ->
         {:ok, transactions}
@@ -1068,7 +1074,7 @@ defmodule Explorer.Chain do
     |> Repo.one()
     |> case do
       nil ->
-        {:error, :not_found}
+        {:ok, -1}
 
       transaction ->
         {:ok, transaction.did_status}

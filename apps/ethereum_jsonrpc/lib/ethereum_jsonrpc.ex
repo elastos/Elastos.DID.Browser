@@ -495,7 +495,7 @@ defmodule EthereumJSONRPC do
     case result do
       {:ok, response} ->
 
-        if response["transaction"] != [] do
+        if response["transaction"] != [] && response["transaction"] != nil do
           transactions = response["transaction"]
           did_status = response["status"]
           Enum.map(transactions, fn transaction ->
@@ -506,6 +506,8 @@ defmodule EthereumJSONRPC do
               %{payload: transaction["operation"]["payload"], did_status: did_status}
             end
           end)
+        else
+          [nil]
         end
 
       {:error} ->
@@ -546,6 +548,9 @@ defmodule EthereumJSONRPC do
         end
 
       {:error} ->
+        0
+
+      {:error, 404} ->
         0
     end
 

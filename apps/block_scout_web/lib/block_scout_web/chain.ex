@@ -230,8 +230,6 @@ defmodule BlockScoutWeb.Chain do
   def find_did_to_transactions(did) do
     {:ok, transactions} = find_did_from_hash(did)
     transactions
-    #require Logger
-      #Logger.warn("-=-=-=-=-=-=-=-=-==-=-find_did_to_transactions==-=-=-=-=-=-=-=: #{inspect(transactions)}")
   end
 
   def find_did_status_to_transactions(did) do
