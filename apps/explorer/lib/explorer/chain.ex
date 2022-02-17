@@ -1055,6 +1055,7 @@ defmodule Explorer.Chain do
       )
 
     query
+    |> preload(:block)
     |> order_by(desc: :block_number)
     |> Repo.all()
     |> case do

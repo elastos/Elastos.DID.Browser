@@ -68,6 +68,7 @@
         </div>
 
         <%= Enum.map(@transactions, fn transaction -> %>
+          <% block = transaction.block %>
           <div style="padding-bottom: 1rem;">
             <div class="tile tile-type-transaction fade-in tile-status--success" data-test="transaction">
               <div class="row tile-body" data-selector="token-transfers-toggle" data-test="chain_transaction">
@@ -125,7 +126,7 @@
                   <span class="mr-2 mr-md-0 order-1">
                     <a href="/blocks/7133717">Block #<%= transaction.block_number %></a>      
                   </span>                  
-                  <span class="mr-2 mr-md-0 order-2" in-tile="" data-from-now="<%= transaction.inserted_at %>"></span>
+                  <span class="mr-2 mr-md-0 order-2" in-tile="" data-from-now="<%= transaction.block.timestamp %>"></span>
                   <span class="mr-2 mr-md-0 order-0 order-md-3">
                       <span data-test="transaction_type" class="badge badge-danger tile-badge">
                         OUT            
