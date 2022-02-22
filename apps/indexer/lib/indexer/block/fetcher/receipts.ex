@@ -72,11 +72,6 @@ defmodule Indexer.Block.Fetcher.Receipts do
           {:ok, didlogs} ->
             did_info_result = EthereumJSONRPC.fetch_did_info(didlogs["did"], transaction_hash)
 
-
-            require Logger
-            Logger.warn("-=-=-=-=-=-=-=-=-==-=-add_did_logfree==-=-=-=-=-=-=-=: #{inspect(did_info_result)}")
-
-
             #if did_info_result != nil do
               did_info_result = Enum.reject(did_info_result, & &1 == nil)
               did_info_result = Enum.at(did_info_result, 0)
