@@ -495,25 +495,68 @@ defmodule EthereumJSONRPC do
     case result do
       {:ok, response} ->
 
-        if response["transaction"] != [] do
+        if response["transaction"] != [] && response["transaction"] != nil do
           transactions = response["transaction"]
+          did_status = response["status"]
           Enum.map(transactions, fn transaction ->
             txid = "0x" <> transaction["txid"]
             #require Logger
               #Logger.warn("-=-=-=-=-=-=-=-=-==-=-fetch_did_info==-=-=-=-=-=-=-=: #{inspect(txid)}, #{inspect(transaction_hash)}")
             if txid == transaction_hash do
-              transaction["operation"]["payload"]
-            else
-              ""
+              %{payload: transaction["operation"]["payload"], did_status: did_status}
             end
           end)
+        else
+          [nil]
         end
 
-      {:error, reason} ->
-        ""
+      {:error} ->
+        [nil]
     end
 
   end
+
+  def fetch_did_credentials_list_count(did) do
+
+    request = %{
+      id: 1,
+      method: "did_listCredentials",
+      params: [
+        %{
+          did: did,
+          skip: 0,
+          limit: 250
+        }
+      ]
+    }
+
+    json_rpc_named_arguments = Application.get_env(:explorer, :json_rpc_named_arguments)
+
+    result =
+      request
+      |> EthereumJSONRPC.request()
+      |> EthereumJSONRPC.json_rpc(json_rpc_named_arguments)
+
+    case result do
+      {:ok, response} ->
+
+        credentials = response["credentials"]
+        if !is_nil(credentials) do
+          credentials_count = Enum.count(credentials)
+        else
+          0
+        end
+
+      {:error} ->
+        0
+
+      {:error, 404} ->
+        0
+    end
+
+  end
+
+
 
   defp fetch_blocks_by_params(params, request, json_rpc_named_arguments)
        when is_list(params) and is_function(request, 1) do

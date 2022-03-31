@@ -13,7 +13,9 @@ defmodule BlockScoutWeb.Chain do
       string_to_block_hash: 1,
       string_to_transaction_hash: 1,
       token_contract_address_from_token_name: 1,
-      find_did_from_hash: 1
+      find_did_from_hash: 1,
+      find_did_status_from_did: 1,
+      find_did_credentials_list_count: 1
     ]
 
   alias Explorer.Chain.Block.Reward
@@ -222,14 +224,21 @@ defmodule BlockScoutWeb.Chain do
   end
 
   defp did_from_param(did) do
-    {:ok, %{"did" => did}}
+    {:ok, %{"did" => did, "is_did" => true}}
   end
 
   def find_did_to_transactions(did) do
     {:ok, transactions} = find_did_from_hash(did)
     transactions
-    #require Logger
-      #Logger.warn("-=-=-=-=-=-=-=-=-==-=-find_did_to_transactions==-=-=-=-=-=-=-=: #{inspect(transactions)}")
+  end
+
+  def find_did_status_to_transactions(did) do
+    {:ok, did_status} = find_did_status_from_did(did)
+    did_status
+  end
+
+  def find_did_credentials_to_transactions(did) do
+    did_credentials_list_count = find_did_credentials_list_count(did)
   end
 
   defp token_address_from_name(name) do

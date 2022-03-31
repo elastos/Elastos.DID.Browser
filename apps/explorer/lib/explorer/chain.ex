@@ -1047,17 +1047,43 @@ defmodule Explorer.Chain do
   end
 
   def find_did_from_hash(did) do
-    Transaction
-    |> where(did: ^did)
+    did_str = "%#{did}%"
+    query =
+      from(
+        transaction in Transaction,
+        where: ilike(transaction.did, ^did_str)
+      )
+
+    query
+    |> preload(:block)
     |> order_by(desc: :block_number)
     |> Repo.all()
     |> case do
       nil ->
-        {:error, :not_found}
+        {:ok, []}
 
       transactions ->
         {:ok, transactions}
     end
+  end
+
+  def find_did_status_from_did(did) do
+    Transaction
+    |> where(did: ^did)
+    |> order_by(desc: :block_number)
+    |> limit(1)
+    |> Repo.one()
+    |> case do
+      nil ->
+        {:ok, -1}
+
+      transaction ->
+        {:ok, transaction.did_status}
+    end
+  end
+
+  def find_did_credentials_list_count(did) do
+    did_credentials_list_count = EthereumJSONRPC.fetch_did_credentials_list_count(did)
   end
 
   def decompiled_code(address_hash, version) do

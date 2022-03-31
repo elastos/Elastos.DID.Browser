@@ -65,17 +65,32 @@ defmodule Indexer.Block.Fetcher.Receipts do
         end)
       
       Enum.map(transactions_with_receipts, fn %{hash: transaction_hash} = transaction_params ->
-        didlogs = Map.fetch!(transaction_hash_to_didlog, transaction_hash)
-        payload = EthereumJSONRPC.fetch_did_info(didlogs["did"], transaction_hash)
-        if payload != "" do
-          payload = Enum.reject(payload, & &1 == "")
+
+        result = Map.fetch(transaction_hash_to_didlog, transaction_hash) 
+
+        case result do
+          {:ok, didlogs} ->
+            did_info_result = EthereumJSONRPC.fetch_did_info(didlogs["did"], transaction_hash)
+
+            #if did_info_result != nil do
+              did_info_result = Enum.reject(did_info_result, & &1 == nil)
+              did_info_result = Enum.at(did_info_result, 0)
+              payload = did_info_result[:payload]
+              did_status = did_info_result[:did_status]
+             #_ = var!(payload)
+             #_ = var!(did_status)
+            #end
+
+            didlogs = Map.merge(didlogs, %{payload: payload})
+            merged_params = Map.merge(transaction_params, %{didlog: Poison.encode!(didlogs)})
+            merged_params = Map.merge(merged_params, %{did: didlogs["did"]})
+            merged_params = Map.merge(merged_params, %{did_status: did_status})
+            #require Logger
+              #Logger.warn("-=-=-=-=-=-=-=-=-==-=-add_did_log==-=-=-=-=-=-=-=: #{inspect(merged_params)}")
+            merged_params
+          _ ->
+            transaction_params
         end
-        didlogs = Map.merge(didlogs, %{payload: payload})
-        merged_params = Map.merge(transaction_params, %{didlog: Poison.encode!(didlogs)})
-        merged_params = Map.merge(merged_params, %{did: didlogs["did"]})
-        #require Logger
-          #Logger.warn("-=-=-=-=-=-=-=-=-==-=-add_did_log==-=-=-=-=-=-=-=: #{inspect(merged_params)}")
-        merged_params
       end)
     else
       transactions_with_receipts

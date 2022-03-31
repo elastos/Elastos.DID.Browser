@@ -31,7 +31,7 @@ defmodule Explorer.Chain.Transaction do
 
   @optional_attrs ~w(block_hash block_number created_contract_address_hash cumulative_gas_used earliest_processing_start
                      error gas_used index created_contract_code_indexed_at status
-                     to_address_hash revert_reason didlog did)a
+                     to_address_hash revert_reason didlog did did_status)a
 
   @required_attrs ~w(from_address_hash gas gas_price hash input nonce r s v value)a
 
@@ -165,7 +165,8 @@ defmodule Explorer.Chain.Transaction do
           value: Wei.t(),
           revert_reason: String.t(),
           didlog: String.t(),
-          did: String.t()
+          did: String.t(),
+          did_status: integer()
         }
 
   @derive {Poison.Encoder,
@@ -187,7 +188,8 @@ defmodule Explorer.Chain.Transaction do
              :value,
              :revert_reason,
              :didlog,
-             :did
+             :did,
+             :did_status
            ]}
 
   @derive {Jason.Encoder,
@@ -209,7 +211,8 @@ defmodule Explorer.Chain.Transaction do
              :value,
              :revert_reason,
              :didlog,
-             :did
+             :did,
+             :did_status
            ]}
 
   @primary_key {:hash, Hash.Full, autogenerate: false}
@@ -240,6 +243,7 @@ defmodule Explorer.Chain.Transaction do
 
     field(:didlog, :string)
     field(:did, :string)
+    field(:did_status, :integer)
 
     timestamps()
 

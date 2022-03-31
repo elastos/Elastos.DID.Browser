@@ -1,12 +1,9 @@
 defmodule BlockScoutWeb.TransactionDidlogController do
   use BlockScoutWeb, :controller
 
-  import BlockScoutWeb.Chain, only: [paging_options: 1, next_page_params: 3, split_list_by_page: 1]
-
-  alias BlockScoutWeb.{AccessHelpers, TransactionDidlogView, TransactionView}
+  alias BlockScoutWeb.{AccessHelpers, TransactionView}
   alias Explorer.{Chain, Market}
   alias Explorer.ExchangeRates.Token
-  alias Phoenix.View
 
 
   def index(conn, %{"transaction_id" => transaction_hash_string} = params) do

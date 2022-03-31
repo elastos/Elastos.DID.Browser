@@ -145,13 +145,15 @@ defmodule BlockScoutWeb.ChainController do
     redirect(conn, to: address_path(conn, :show, item))
   end
 
-  defp redirect_search_results(conn, %{"did" => did} = item) do
+  defp redirect_search_results(conn, %{"did" => did, "is_did" => true} = item) do
     redirect(conn, to: chain_path(conn, :did, item))
   end
 
   def did(conn, did) do
     did_name = did["did"]
     transactions = BlockScoutWeb.Chain.find_did_to_transactions(did_name)
+    did_status = BlockScoutWeb.Chain.find_did_status_to_transactions(did_name)
+    did_credentials_list_count = BlockScoutWeb.Chain.find_did_credentials_to_transactions(did_name)
     #require Logger
       #Logger.warn("-=-=-=-=-=-=-=-=-==-=-did_controller==-=-=-=-=-=-=-=: #{inspect(transactions)}")
 
@@ -160,6 +162,8 @@ defmodule BlockScoutWeb.ChainController do
       "_did.html",
       current_path: current_path(conn),
       did_name: did_name,
+      did_status: did_status,
+      did_credentials_list_count: did_credentials_list_count,
       transactions: transactions
     )
   end

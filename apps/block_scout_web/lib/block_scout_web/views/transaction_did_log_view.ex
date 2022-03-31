@@ -9,8 +9,8 @@ defmodule BlockScoutWeb.TransactionDidlogView do
   end
 
   def decode_payload(payload) do
-    if payload != "" do
-      payload = Enum.at(payload, 0, "")
+    if payload != "" && payload != nil do
+      #payload = Enum.at(payload, 0, "")
       if String.contains?(payload, "did:elastos:") do
         payload
       else
