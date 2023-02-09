@@ -4,9 +4,11 @@
     <div class="row footer-logo-row">
       <div class="col-md-12">
         <%= link to: webapp_url(@conn), class: "footer-brand" do %>
-          <img class="footer-logo" src="<%= logo_footer() %>" alt="<%= subnetwork_title() %>" />
+          <%= if logo_footer() do %>
+            <img class="footer-logo" src="<%= static_path(@conn, logo_footer()) %>" alt="<%= subnetwork_title() %>" />
+          <% end %>
           <%= if logo_text() do %>
-            <span class="logo-text footer"> <%= logo_text() %> </span>
+            <span class="logo-text in-footer <%= unless logo_footer(), do: "no-logo" %>"> <%= logo_text() %> </span>
           <% end %>
         <% end %>
       </div>
@@ -45,7 +47,7 @@
           <h3><%= gettext("Main Networks") %></h3>
           <ul>
             <%= for %{title: title, url: url} <- main_nets do %>
-              <li><a href="<%= url%>" rel="norefferer" class="footer-link"> <%= title %> </a></li>
+              <li><a href="<%= url %>" rel="norefferer" class="footer-link"> <%= title %> </a></li>
             <% end %>
           </ul>
         </div>
@@ -58,7 +60,7 @@
           <h3><%= gettext("Test Networks") %></h3>
           <ul>
             <%= for %{title: title, url: url} <- test_nets do %>
-              <li><a href="<%= url%>" rel="noreferrer" class="footer-link"> <%= title %> </a></li>
+              <li><a href="<%= url %>" rel="noreferrer" class="footer-link"> <%= title %> </a></li>
             <% end %>
           </ul>
         </div>
@@ -69,7 +71,7 @@
           <h3><%= gettext("Other Explorers") %></h3>
           <ul>
             <%= for {name, url} <- other_explorers do %>
-              <li><a href="<%= url%>" rel="noreferrer" class="footer-link"> <%= name %> </a></li>
+              <li><a href="<%= url %>" rel="noreferrer" class="footer-link"> <%= name %> </a></li>
             <% end %>
           </ul>
         </div>

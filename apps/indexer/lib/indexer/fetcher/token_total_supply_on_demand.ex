@@ -5,7 +5,7 @@ defmodule Indexer.Fetcher.TokenTotalSupplyOnDemand do
   """
 
   use GenServer
-  use Indexer.Fetcher
+  use Indexer.Fetcher, restart: :permanent
 
   alias Explorer.{Chain, Repo}
   alias Explorer.Chain.{Address, Token}
@@ -35,7 +35,7 @@ defmodule Indexer.Fetcher.TokenTotalSupplyOnDemand do
 
     token_params =
       token_address_hash
-      |> MetadataRetriever.get_functions_of()
+      |> MetadataRetriever.get_total_supply_of()
 
     token =
       Token

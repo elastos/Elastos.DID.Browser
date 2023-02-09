@@ -232,7 +232,7 @@
                 call.valueBigInt = bigInt.zero;
                 break;
             default:
-                throw "Unknown custom call op " + op;
+                throw 'Unknown custom call op ' + op;
         }
 
         this.callStack.push(call);
@@ -345,7 +345,11 @@
             result.error = error
         } else {
             result.createdContractAddressHash = toHex(ctx.to);
-            result.createdContractCode = toHex(db.getCode(ctx.to));
+            if (toHex(ctx.input) != '0x') {
+              result.createdContractCode = toHex(db.getCode(ctx.to));
+            } else {
+              result.createdContractCode = '0x';
+            }
         }
     },
 
@@ -438,24 +442,25 @@
     },
 
     putGas(call) {
-        const gasBigInt = call.gasBigInt;
-        delete call.gasBigInt;
 
-        if (gasBigInt === undefined) {
-            gasBigInt = bigInt.zero;
+        if (call.gasBigInt === undefined) {
+            call.gas = '0x0';
+        } else {
+            call.gas = '0x' + call.gasBigInt.toString(16);
         }
 
-        call.gas = '0x' + gasBigInt.toString(16);
+        delete call.gasBigInt;
+
     },
 
     putGasUsed(call) {
-        const gasUsedBigInt = call.gasUsedBigInt;
-        delete call.gasUsedBigInt;
 
-        if (gasUsedBigInt === undefined) {
-            gasUsedBigInt = bigInt.zero;
+        if (call.gasUsedBigInt === undefined) {
+            call.gasUsed = '0x0';
+        } else {
+            call.gasUsed = '0x' + call.gasUsedBigInt.toString(16);
         }
 
-        call.gasUsed = '0x' + gasUsedBigInt.toString(16);
+        delete call.gasUsedBigInt;
     }
 }

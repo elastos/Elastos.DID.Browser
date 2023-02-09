@@ -1,9 +1,12 @@
 defmodule BlockScoutWeb.TransactionTokenTransferController do
   use BlockScoutWeb, :controller
 
+  import BlockScoutWeb.Account.AuthController, only: [current_user: 1]
   import BlockScoutWeb.Chain, only: [paging_options: 1, next_page_params: 3, split_list_by_page: 1]
+  import BlockScoutWeb.Models.GetAddressTags, only: [get_address_tags: 2]
+  import BlockScoutWeb.Models.GetTransactionTags, only: [get_transaction_with_addresses_tags: 2]
 
-  alias BlockScoutWeb.{AccessHelpers, TransactionTokenTransferView, TransactionView}
+  alias BlockScoutWeb.{AccessHelpers, Controller, TransactionController, TransactionTokenTransferView}
   alias Explorer.{Chain, Market}
   alias Explorer.ExchangeRates.Token
   alias Phoenix.View
@@ -25,9 +28,12 @@ defmodule BlockScoutWeb.TransactionTokenTransferController do
         Keyword.merge(
           [
             necessity_by_association: %{
+              [from_address: :smart_contract] => :optional,
+              [to_address: :smart_contract] => :optional,
+              [from_address: :names] => :optional,
+              [to_address: :names] => :optional,
               from_address: :required,
-              to_address: :required,
-              token: :required
+              to_address: :required
             }
           ],
           paging_options(params)
@@ -67,28 +73,16 @@ defmodule BlockScoutWeb.TransactionTokenTransferController do
       )
     else
       {:restricted_access, _} ->
-        conn
-        |> put_status(404)
-        |> put_view(TransactionView)
-        |> render("not_found.html", transaction_hash: transaction_hash_string)
+        TransactionController.set_not_found_view(conn, transaction_hash_string)
 
       :error ->
-        conn
-        |> put_status(422)
-        |> put_view(TransactionView)
-        |> render("invalid.html", transaction_hash: transaction_hash_string)
+        unprocessable_entity(conn)
 
       {:error, :not_found} ->
-        conn
-        |> put_status(404)
-        |> put_view(TransactionView)
-        |> render("not_found.html", transaction_hash: transaction_hash_string)
+        TransactionController.set_not_found_view(conn, transaction_hash_string)
 
       :not_found ->
-        conn
-        |> put_status(404)
-        |> put_view(TransactionView)
-        |> render("not_found.html", transaction_hash: transaction_hash_string)
+        TransactionController.set_not_found_view(conn, transaction_hash_string)
     end
   end
 
@@ -114,35 +108,31 @@ defmodule BlockScoutWeb.TransactionTokenTransferController do
         "index.html",
         exchange_rate: Market.get_exchange_rate(Explorer.coin()) || Token.null(),
         block_height: Chain.block_height(),
-        current_path: current_path(conn),
+        current_path: Controller.current_full_path(conn),
+        current_user: current_user(conn),
         show_token_transfers: true,
         didlog: didlog,
-        transaction: transaction
+        transaction: transaction,
+        from_tags: get_address_tags(transaction.from_address_hash, current_user(conn)),
+        to_tags: get_address_tags(transaction.to_address_hash, current_user(conn)),
+        tx_tags:
+          get_transaction_with_addresses_tags(
+            transaction,
+            current_user(conn)
+          )
       )
     else
       :not_found ->
-        conn
-        |> put_status(404)
-        |> put_view(TransactionView)
-        |> render("not_found.html", transaction_hash: transaction_hash_string)
+        TransactionController.set_not_found_view(conn, transaction_hash_string)
 
       :error ->
-        conn
-        |> put_status(422)
-        |> put_view(TransactionView)
-        |> render("invalid.html", transaction_hash: transaction_hash_string)
+        unprocessable_entity(conn)
 
       {:error, :not_found} ->
-        conn
-        |> put_status(404)
-        |> put_view(TransactionView)
-        |> render("not_found.html", transaction_hash: transaction_hash_string)
+        TransactionController.set_not_found_view(conn, transaction_hash_string)
 
       {:restricted_access, _} ->
-        conn
-        |> put_status(404)
-        |> put_view(TransactionView)
-        |> render("not_found.html", transaction_hash: transaction_hash_string)
+        TransactionController.set_not_found_view(conn, transaction_hash_string)
     end
   end
 end

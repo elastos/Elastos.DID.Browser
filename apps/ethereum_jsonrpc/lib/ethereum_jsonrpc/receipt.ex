@@ -263,7 +263,7 @@ defmodule EthereumJSONRPC.Receipt do
   # hash format
   # gas is passed in from the `t:EthereumJSONRPC.Transaction.params/0` to allow pre-Byzantium status to be derived
   defp entry_to_elixir({key, _} = entry)
-       when key in ~w(blockHash contractAddress from gas logsBloom root to transactionHash revertReason),
+       when key in ~w(blockHash contractAddress from gas logsBloom root to transactionHash revertReason type effectiveGasPrice),
        do: {:ok, entry}
 
   defp entry_to_elixir({key, quantity})
@@ -294,7 +294,7 @@ defmodule EthereumJSONRPC.Receipt do
       one when one in ["0x1", "0x01"] ->
         {:ok, {key, :ok}}
 
-      # pre-Byzantium / Ethereum Classic on Parity
+      # pre-Byzantium
       nil ->
         :ignore
 
@@ -310,6 +310,21 @@ defmodule EthereumJSONRPC.Receipt do
 
   # Nethermind field
   defp entry_to_elixir({"error", _}) do
+    :ignore
+  end
+
+  # Arbitrum fields
+  defp entry_to_elixir({key, _}) when key in ~w(returnData returnCode feeStats l1BlockNumber) do
+    :ignore
+  end
+
+  # Metis fields
+  defp entry_to_elixir({key, _}) when key in ~w(l1GasUsed l1GasPrice l1FeeScalar l1Fee) do
+    :ignore
+  end
+
+  # GoQuorum specific transaction receipt fields
+  defp entry_to_elixir({key, _}) when key in ~w(isPrivacyMarkerTransaction) do
     :ignore
   end
 
