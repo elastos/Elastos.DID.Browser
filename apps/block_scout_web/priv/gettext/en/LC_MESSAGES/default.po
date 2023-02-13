@@ -99,7 +99,13 @@ msgid "(query)"
 msgstr ""
 
 #, elixir-format
-#: lib/block_scout_web/templates/layout/app.html.eex:186
+#: lib/block_scout_web/templates/address_contract_verification_common_fields/_library_first.html.eex:4
+#, elixir-autogen, elixir-format
+msgid ") may be added for each contract. Click the Add Library button to add an additional one."
+msgstr ""
+
+#: lib/block_scout_web/templates/layout/app.html.eex:83
+#, elixir-autogen, elixir-format
 msgid "- We're indexing this chain right now. Some of the counts may be inaccurate."
 msgstr ""
 
@@ -180,6 +186,61 @@ msgid "Actual gas amount used by the transaction."
 msgstr ""
 
 #, elixir-format
+#: lib/block_scout_web/templates/account/api_key/form.html.eex:7
+#: lib/block_scout_web/templates/account/custom_abi/form.html.eex:8
+#: lib/block_scout_web/templates/layout/_add_chain_to_mm.html.eex:10
+#, elixir-autogen, elixir-format
+msgid "Add"
+msgstr ""
+
+#: lib/block_scout_web/templates/account/api_key/index.html.eex:44
+#, elixir-autogen, elixir-format
+msgid "Add API key"
+msgstr ""
+
+#: lib/block_scout_web/templates/address_contract_verification_via_flattened_code/new.html.eex:86
+#: lib/block_scout_web/templates/address_contract_verification_via_multi_part_files/new.html.eex:76
+#, elixir-autogen, elixir-format
+msgid "Add Contract Libraries"
+msgstr ""
+
+#: lib/block_scout_web/templates/account/custom_abi/index.html.eex:44
+#, elixir-autogen, elixir-format
+msgid "Add Custom ABI"
+msgstr ""
+
+#: lib/block_scout_web/templates/address_contract_verification_via_flattened_code/new.html.eex:97
+#: lib/block_scout_web/templates/address_contract_verification_via_multi_part_files/new.html.eex:87
+#, elixir-autogen, elixir-format
+msgid "Add Library"
+msgstr ""
+
+#: lib/block_scout_web/templates/account/watchlist/show.html.eex:38
+#, elixir-autogen, elixir-format
+msgid "Add address"
+msgstr ""
+
+#: lib/block_scout_web/templates/account/tag_address/form.html.eex:7
+#: lib/block_scout_web/templates/account/tag_address/index.html.eex:37
+#, elixir-autogen, elixir-format
+msgid "Add address tag"
+msgstr ""
+
+#: lib/block_scout_web/templates/account/watchlist_address/form.html.eex:7
+#, elixir-autogen, elixir-format
+msgid "Add address to the Watch list"
+msgstr ""
+
+#: lib/block_scout_web/templates/account/tag_transaction/form.html.eex:7
+#: lib/block_scout_web/templates/account/tag_transaction/index.html.eex:37
+#, elixir-autogen, elixir-format
+msgid "Add transaction tag"
+msgstr ""
+
+#: lib/block_scout_web/templates/account/tag_address/form.html.eex:11
+#: lib/block_scout_web/templates/account/tag_address/index.html.eex:23
+#: lib/block_scout_web/templates/account/watchlist/show.html.eex:23
+#: lib/block_scout_web/templates/account/watchlist_address/form.html.eex:12
 #: lib/block_scout_web/templates/address/_validator_metadata_modal.html.eex:16
 #: lib/block_scout_web/templates/transaction_log/_logs.html.eex:20 lib/block_scout_web/views/address_view.ex:104
 msgid "Address"
@@ -1498,7 +1559,9 @@ msgstr ""
 
 #, elixir-format
 #: lib/block_scout_web/templates/tokens/instance/metadata/index.html.eex:18
-#: lib/block_scout_web/templates/tokens/instance/overview/_tabs.html.eex:10 lib/block_scout_web/views/tokens/instance/overview_view.ex:179
+#: lib/block_scout_web/templates/tokens/instance/overview/_tabs.html.eex:10
+#: lib/block_scout_web/views/tokens/instance/overview_view.ex:128
+#, elixir-autogen, elixir-format
 msgid "Metadata"
 msgstr ""
 
@@ -2519,12 +2582,18 @@ msgstr ""
 
 #, elixir-format
 #: lib/block_scout_web/templates/address/_tabs.html.eex:13
-#: lib/block_scout_web/templates/address_token_transfer/index.html.eex:19 lib/block_scout_web/templates/tokens/instance/overview/_tabs.html.eex:3
-#: lib/block_scout_web/templates/tokens/instance/transfer/index.html.eex:16 lib/block_scout_web/templates/tokens/overview/_tabs.html.eex:3
-#: lib/block_scout_web/templates/tokens/transfer/index.html.eex:14 lib/block_scout_web/templates/transaction/_tabs.html.eex:4
-#: lib/block_scout_web/templates/transaction_token_transfer/index.html.eex:7 lib/block_scout_web/views/address_view.ex:348
-#: lib/block_scout_web/views/tokens/instance/overview_view.ex:178 lib/block_scout_web/views/tokens/overview_view.ex:41
-#: lib/block_scout_web/views/transaction_view.ex:512
+#: lib/block_scout_web/templates/address_token_transfer/index.html.eex:19
+#: lib/block_scout_web/templates/tokens/instance/overview/_tabs.html.eex:3
+#: lib/block_scout_web/templates/tokens/instance/transfer/index.html.eex:16
+#: lib/block_scout_web/templates/tokens/overview/_tabs.html.eex:5
+#: lib/block_scout_web/templates/tokens/transfer/index.html.eex:15
+#: lib/block_scout_web/templates/transaction/_tabs.html.eex:4
+#: lib/block_scout_web/templates/transaction_token_transfer/index.html.eex:7
+#: lib/block_scout_web/views/address_view.ex:373
+#: lib/block_scout_web/views/tokens/instance/overview_view.ex:127
+#: lib/block_scout_web/views/tokens/overview_view.ex:39
+#: lib/block_scout_web/views/transaction_view.ex:527
+#, elixir-autogen, elixir-format
 msgid "Token Transfers"
 msgstr ""
 
