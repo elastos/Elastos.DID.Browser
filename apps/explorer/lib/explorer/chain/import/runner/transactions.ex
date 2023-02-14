@@ -168,7 +168,7 @@ defmodule Explorer.Chain.Import.Runner.Transactions do
           transaction.value,
           transaction.didlog,
           transaction.did,
-          transaction.did_status
+          transaction.did_status,
           transaction.earliest_processing_start,
           transaction.revert_reason,
           transaction.max_priority_fee_per_gas,
