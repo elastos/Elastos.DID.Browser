@@ -100,6 +100,7 @@ defmodule BlockScoutWeb.TransactionStateController do
         transaction: transaction,
         from_tags: get_address_tags(transaction.from_address_hash, current_user(conn)),
         to_tags: get_address_tags(transaction.to_address_hash, current_user(conn)),
+        didlog: false,
         tx_tags:
           get_transaction_with_addresses_tags(
             transaction,

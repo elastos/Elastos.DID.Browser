@@ -166,6 +166,7 @@ defmodule BlockScoutWeb.TransactionController do
             current_path: Controller.current_full_path(conn),
             current_user: current_user(conn),
             show_token_transfers: true,
+            didlog: false,
             transaction: transaction,
             from_tags: get_address_tags(transaction.from_address_hash, current_user(conn)),
             to_tags: get_address_tags(transaction.to_address_hash, current_user(conn)),
@@ -194,6 +195,7 @@ defmodule BlockScoutWeb.TransactionController do
                  transaction_hash,
                  necessity_by_association: @necessity_by_association
                ),
+              {:ok, didlog} <- Chain.didlog_to_transaction(transaction_hash),
              {:ok, false} <- AccessHelpers.restricted_access?(to_string(transaction.from_address_hash), params),
              {:ok, false} <- AccessHelpers.restricted_access?(to_string(transaction.to_address_hash), params) do
           render(
@@ -205,6 +207,7 @@ defmodule BlockScoutWeb.TransactionController do
             block_height: Chain.block_height(),
             show_token_transfers: Chain.transaction_has_token_transfers?(transaction_hash),
             transaction: transaction,
+            didlog: didlog,
             from_tags: get_address_tags(transaction.from_address_hash, current_user(conn)),
             to_tags: get_address_tags(transaction.to_address_hash, current_user(conn)),
             tx_tags:
