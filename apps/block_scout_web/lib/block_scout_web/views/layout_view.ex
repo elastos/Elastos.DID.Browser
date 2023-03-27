@@ -5,7 +5,7 @@ defmodule BlockScoutWeb.LayoutView do
   alias Plug.Conn
   alias Poison.Parser
 
-  @issue_url "https://github.com/elastos/Elastos.ELA.SideChain.EID.Blockscout/issues/new/choose"
+  @issue_url "https://github.com/elastos/Elastos.ELA.SideChain.EID.Blockscout/issues/new"
 
   @default_other_networks [
     %{
@@ -53,15 +53,8 @@ defmodule BlockScoutWeb.LayoutView do
   end
 
   def issue_link(conn) do
-    params = [
-      labels: "BlockScout",
-      body: issue_body(conn),
-      title: subnetwork_title() <> ": <Issue Title>"
-    ]
 
-    issue_url = "#{Application.get_env(:block_scout_web, :footer)[:github_link]}/issues/new"
-
-    [issue_url, "?", URI.encode_query(params)]
+    @issue_url
   end
 
   defp issue_body(conn) do
