@@ -36,7 +36,7 @@
       <div class="col-xs-12 col-md-4 col-lg-<%= col_size %> footer-list">
         <h3>BlockScout</h3>
         <ul>
-          <li><a href="<%= issue_link(@conn) %>" rel="noreferrer" class="footer-link" target="_blank"><%= gettext("Submit an Issue") %></a></li>
+          <li><a href="<%= issue_link() %>" rel="noreferrer" class="footer-link" target="_blank"><%= gettext("Submit an Issue") %></a></li>
           <li><a href="https://github.com/elastos/Elastos.ELA.SideChain.ETH.Blockscout" rel="noreferrer" class="footer-link"><%= gettext("Contribute") %></a></li>
         </ul>
       </div>

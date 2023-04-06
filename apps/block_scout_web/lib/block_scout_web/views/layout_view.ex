@@ -19,7 +19,6 @@ defmodule BlockScoutWeb.LayoutView do
     }
   ]
   
-  import BlockScoutWeb.AddressView, only: [from_address_hash: 1]
 
 
   alias BlockScoutWeb.SocialMedia
@@ -52,42 +51,11 @@ defmodule BlockScoutWeb.LayoutView do
     SocialMedia.links()
   end
 
-  def issue_link(conn) do
+  def issue_link() do
 
     @issue_url
   end
 
-  defp issue_body(conn) do
-    user_agent =
-      case Conn.get_req_header(conn, "user-agent") do
-        [] -> "unknown"
-        [user_agent] -> if String.valid?(user_agent), do: user_agent, else: "unknown"
-        _other -> "unknown"
-      end
-
-    """
-    *Describe your issue here.*
-
-    ### Environment
-    * Elixir Version: #{System.version()}
-    * Erlang Version: #{System.otp_release()}
-    * BlockScout Version: #{version()}
-
-    * User Agent: `#{user_agent}`
-
-    ### Steps to reproduce
-
-    *Tell us how to reproduce this issue. If possible, push up a branch to your fork with a regression test we can run to reproduce locally.*
-
-    ### Expected Behaviour
-
-    *Tell us what should happen.*
-
-    ### Actual Behaviour
-
-    *Tell us what happens instead.*
-    """
-  end
 
   def version do
     BlockScoutWeb.version()
