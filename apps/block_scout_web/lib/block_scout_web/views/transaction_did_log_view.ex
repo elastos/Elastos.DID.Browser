@@ -14,7 +14,7 @@ defmodule BlockScoutWeb.TransactionDidlogView do
       if String.contains?(payload, "did:elastos:") do
         payload
       else
-        {:ok, payload_result} = Base.decode64(payload, padding: false)
+        {:ok, payload_result} = Base.url_decode64(payload, padding: false)
         payload_result
       end
     end
